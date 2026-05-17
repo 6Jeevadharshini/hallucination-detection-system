@@ -1,59 +1,77 @@
-# LLM Hallucination Detection and Fact Verification System
+# 🕵️ Real-Time LLM Hallucination Detection using RAG
 
-This application detects possible hallucinations in Large Language Model (LLM) responses by verifying factual claims using real web evidence and semantic similarity scoring.
+This project detects hallucinations in Large Language Model (LLM) responses using a Retrieval-Augmented Generation (RAG) pipeline with real-time web evidence retrieval and semantic verification.
 
-## Architecture
+---
 
-1. **User Input:** A Streamlit interface where users can enter a question or prompt.
-2. **LLM Generation:** The system uses the Google Gemini API to generate a detailed response to the query.
-3. **Claim Extraction:** The generated response is broken down into atomic factual claims using NLTK sentence tokenization.
-4. **Web Search Verification:** Each extracted claim is searched using SerpAPI to retrieve top snippets from Google Search as "evidence."
-5. **Semantic Similarity:** A `sentence-transformers` model (`all-MiniLM-L6-v2`) computes the cosine similarity between the original claim and the web evidence.
-6. **Trust Score:** Claims are assigned a status based on their similarity score:
-   - **VERIFIED:** > 75%
-   - **UNCERTAIN:** 45% - 75%
-   - **HALLUCINATED:** < 45%
+# 🚀 Features
 
-## Installation
+- Real-time AI response generation
+- Retrieval-Augmented Generation (RAG)
+- Live web evidence retrieval using DuckDuckGo
+- Hallucination detection
+- Claim extraction and verification
+- Semantic similarity scoring
+- Trust score generation
+- CSV report download
+- Interactive Streamlit UI
 
-1. Clone this repository or navigate to your project directory.
-2. (Optional but recommended) Create a virtual environment:
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows use `venv\Scripts\activate`
-   ```
-3. Install the dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
+---
 
-## API Setup
+# 🧠 Tech Stack
 
-You will need API keys for Google Gemini and SerpAPI.
+## Frontend
 
-1. Rename the `.env.example` file to `.env`:
-   ```bash
-   cp .env.example .env
-   ```
-2. Get a Google Gemini API key from [Google AI Studio](https://aistudio.google.com/).
-3. Get a SerpAPI key from [SerpAPI](https://serpapi.com/).
-4. Add the keys to your `.env` file:
-   ```env
-   GEMINI_API_KEY="your_actual_gemini_key"
-   SERPAPI_KEY="your_actual_serpapi_key"
-   ```
+- Streamlit
 
-## Running the Application
+## Backend
 
-Execute the following command in your terminal:
+- Python
+- Groq API (LLM)
+- DuckDuckGo Search
+- Sentence Transformers
+- Scikit-learn
+- NLTK
+
+---
+
+# ⚙️ System Architecture
+
+1. User enters a question in the Streamlit interface.
+2. DuckDuckGo retrieves real-time web evidence.
+3. Retrieved evidence is passed to the Groq LLM.
+4. The LLM generates a grounded response using live evidence.
+5. Claims are extracted from the response.
+6. Each claim is verified using semantic similarity.
+7. Claims are labeled as:
+   - VERIFIED
+   - UNCERTAIN
+   - HALLUCINATED
+8. Overall trust score is generated.
+
+---
+
+# 📊 Verification Logic
+
+The system uses cosine similarity between:
+
+- generated claim
+- retrieved live evidence
+
+### Thresholds
+
+| Similarity Score | Status       |
+| ---------------- | ------------ |
+| > 60%            | VERIFIED     |
+| 30% - 60%        | UNCERTAIN    |
+| < 30%            | HALLUCINATED |
+
+---
+
+# 🚀 Installation
+
+## 1. Clone Repository
 
 ```bash
-streamlit run app.py
+git clone https://github.com/6Jeevadharshini/hallucination-detection-system.git
 ```
-
-## Future Enhancements
-
-- Fine-tune claim extraction with LLM-based atomic fact formulation.
-- Integrate additional search providers or knowledge graphs (e.g., Wikipedia API).
-- Support document upload for fact-checking pre-written documents.
-- Allow swapping out embedding models and thresholds dynamically from the UI.
